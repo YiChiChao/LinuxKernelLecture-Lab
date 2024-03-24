@@ -1,14 +1,13 @@
-timsort: main.o timsort.o
-	gcc -o timsort main.o timsort.o
+OBJS = main.o timsort.o
+timsort: $(OBJS)
+	cc -o timsort $(OBJS)
 
-main.o: main.c sort_impl.h list.h
-	gcc -c main.c
+$(OBJS) : sort_impl.h
+main.o : list.h
 
-timsort.o: timsort.c sort_impl.h
-	gcc -c timsort.c
-
+.PHONY : do clean
 do:
 	./timsort
 
 clean:
-	rm timsort main.o timsort.o 
+	rm timsort $(OBJS)
