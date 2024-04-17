@@ -5,7 +5,10 @@ timsort: $(OBJS)
 $(OBJS) : sort_impl.h
 main.o : list.h
 
-.PHONY : do clean
+.PHONY : do clean check
+
+check:
+	valgrind --tool=cachegrind --log-file=logfile ./timsort
 do:
 	./timsort
 

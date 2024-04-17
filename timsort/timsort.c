@@ -162,7 +162,7 @@ static struct pair *find_run(void *priv,
         list->next = NULL;
     }
     
-    printf("==FIND RUN FINISH==\n");
+    //printf("==FIND RUN FINISH==\n");
     head->prev = NULL;
     head->next->prev = (struct list_head *) len;
     result->head = head, result->next = next;

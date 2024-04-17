@@ -12,7 +12,7 @@ typedef struct {
     int seq;
 } element_t;
 
-#define SAMPLES 10
+#define SAMPLES 100000
 
 void print_list(struct list_head *head){
   element_t *node;
@@ -31,7 +31,7 @@ static void create_sample(struct list_head *head, element_t *space, int samples)
         elem->val = rand();
         list_add_tail(&elem->list, head);
     }
-    print_list(head);
+    //print_list(head);
 }
 
 static void copy_list(struct list_head *from,
@@ -70,7 +70,7 @@ bool check_list(struct list_head *head, int count)
 {
     if (list_empty(head))
         return 0 == count;
-    print_list(head);
+    //print_list(head);
     element_t *entry, *safe;
     size_t ctr = 0;
     list_for_each_entry_safe (entry, safe, head, list) {
