@@ -42,6 +42,7 @@ struct hlist_node {
 
 typedef struct {
     int capacity;
+    int hlist_size;
     int count;
     struct list_head dhead;
     struct hlist_head hhead[];
@@ -120,14 +121,15 @@ void list_move(struct list_head *entry, struct list_head *head)
 
 
 
-LRUCache *lRUCacheCreate(int capacity)
+LRUCache *lRUCacheCreate(int capacity, int hlist_size)
 {
-    LRUCache *cache = malloc(2 * sizeof(int) + sizeof(struct list_head) +
-                             capacity * sizeof(struct list_head));
+    LRUCache *cache = malloc(3 * sizeof(int) + sizeof(struct list_head) +
+                             hlist_size * sizeof(struct hlist_head));
     cache->capacity = capacity;
+    cache->hlist_size = hlist_size;
     cache->count = 0;
     INIT_LIST_HEAD(&cache->dhead);
-    for (int i = 0; i < capacity; i++)
+    for (int i = 0; i < hlist_size; i++)
         INIT_HLIST_HEAD(&cache->hhead[i]);
     return cache;
 }
@@ -146,7 +148,7 @@ void lRUCacheFree(LRUCache *obj)
 void lRUCachePut(LRUCache *obj, int key, int value)
 {
     LRUNode *cache = NULL;
-    int hash = key % obj->capacity;
+    int hash = key % obj->hlist_size;
     struct hlist_node *pos;
     hlist_for_each (pos, &obj->hhead[hash]) {
         LRUNode *c = list_entry(pos, LRUNode, node);
@@ -176,7 +178,7 @@ void lRUCachePut(LRUCache *obj, int key, int value)
 
 int lRUCacheGet(LRUCache *obj, int key)
 {
-    int hash = key % obj->capacity;
+    int hash = key % obj->hlist_size;
     struct hlist_node *pos;
     hlist_for_each (pos, &obj->hhead[hash]) {
         LRUNode *cache = list_entry(pos, LRUNode, node); //HHHH

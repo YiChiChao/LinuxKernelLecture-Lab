@@ -1,11 +1,11 @@
-LRU_unitest: lru.h
+lru_randomtest: lru.h
 
 .PHONY : do clean check
 
 check:
-	valgrind --tool=cachegrind --log-file=logfile ./LRU_unitest
+	valgrind --tool=cachegrind --log-file=logfile ./lru_randomtest
 do:
-	./LRU_unitest
+	./lru_randomtest
 
 clean:
-	rm LRU_unitest 
+	rm lru_randomtest

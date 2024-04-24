@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 #include "lru.h"
 /* typedef struct {
     int capacity;
@@ -29,6 +30,15 @@ void printCache(LRUCache *obj)
     }
     printf("\n===============\n");
     return;
+}
+
+long testSearchTime(LRUCache *obj, int key){
+    clock_t start, end;
+    start = clock();
+    lRUCacheGet(obj, key);
+    end = clock();
+    return (end - start) * 1000000 / CLOCKS_PER_SEC;//us
+
 }
 int main()
 {
