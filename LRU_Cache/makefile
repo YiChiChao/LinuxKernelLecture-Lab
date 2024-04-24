@@ -1,4 +1,5 @@
 lru_randomtest: lru.h
+	gcc -g -Wall lru_randomtest.c -o lru_randomtest -lm
 
 .PHONY : do clean check
 

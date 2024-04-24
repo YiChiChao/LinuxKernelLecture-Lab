@@ -3,9 +3,9 @@ import numpy as np
 
 # 定義檔案路徑和 cache capacity 的值
 file_paths = {
-    1000: 'search_time_cache1000.txt',
-    500: 'search_time_cache500.txt',
-    250: 'search_time_cache250.txt'
+    1000: 'multi_search_time_cache1000.txt',
+    500: 'multi_search_time_cache500.txt',
+    250: 'multi_search_time_cache250.txt'
 }
 
 # 定義顏色和標記形狀
@@ -34,7 +34,7 @@ def plot_search_time_scatter():
     
     plt.xlabel('HList Size')
     plt.ylabel('Search Time (microseconds)')
-    plt.title('Search Time vs. HList Size for Different Cache Capacities')
+    plt.title('Search Time vs. HList Size for Different Cache Capacities with Multiplication Method Hash Function')
     plt.legend()
     plt.grid(True)
     

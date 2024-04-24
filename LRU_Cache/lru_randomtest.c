@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
 #include <time.h>
 
 #include "lru.h"
@@ -65,7 +66,7 @@ int main()
 {
     srand(time(NULL));
 
-    FILE *outputFile = fopen("search_time_cache250.txt", "w");
+    FILE *outputFile = fopen("multi_search_time_cache250.txt", "w");
     if (outputFile == NULL) {
         printf("Error opening output file!\n");
         return 1;
@@ -77,11 +78,11 @@ int main()
     long totalTestTime = 0;
     for (int i = 0; i < NUMMAX; i++) {
         int keyToSearch = rand() % NUMMAX;
-        totalTestTime += testSearchTime(Cache, keyToSearch);
+        totalTestTime += lRUCacheGet(Cache, keyToSearch);
     }
     double averageTestTime = (double) totalTestTime / NUMMAX;
-    // fprintf(outputFile, "HLIST_SIZE : %d AVERAGE SEARCHING TIME : %3f\n",
-    //         CAPACITY, averageTestTime);
+     fprintf(outputFile, "HLIST_SIZE : %d AVERAGE SEARCHING TIME : %3f\n",
+            CAPACITY, averageTestTime);
     lRUCacheFree(Cache);
     // fprintf(outputFile, "CACHE CAPACITY : %d\n", CAPACITY);
     for (int hlist_size = CAPACITY; hlist_size >= CAPACITY / 100;
@@ -93,7 +94,7 @@ int main()
         long totalSearchTime = 0;
         for (int i = 0; i < NUMMAX; i++) {
             int keyToSearch = rand() % NUMMAX;
-            totalSearchTime += testSearchTime(Cache, keyToSearch);
+            totalSearchTime += lRUCacheGet(Cache, keyToSearch);
         }
         double averageSearchTime = (double) totalSearchTime / NUMMAX;
         fprintf(outputFile, "%3f\n", averageSearchTime);

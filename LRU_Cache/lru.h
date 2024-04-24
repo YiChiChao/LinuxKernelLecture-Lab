@@ -1,9 +1,12 @@
 #ifndef HLIST_H
 #define HLIST_H
 #include <stdbool.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <math.h>
+#include <time.h>
 
-
+#define GOLDEN_RATIO_32 0x61C88647
 #define container_of(ptr, type, member) \
     ((type *) ((char *) (ptr) - (size_t) & (((type *) 0)->member)))
 
@@ -145,10 +148,15 @@ void lRUCacheFree(LRUCache *obj)
     free(obj);
 }
 
+unsigned int hash_func_multiplication_method(int key, int bits){
+    unsigned int index = ((unsigned int)key * GOLDEN_RATIO_32) >> (32 - bits);
+    return index;
+}
+
 void lRUCachePut(LRUCache *obj, int key, int value)
 {
     LRUNode *cache = NULL;
-    int hash = key % obj->hlist_size;
+    unsigned int hash = hash_func_multiplication_method(key, (int)floor(log2(obj->hlist_size)));
     struct hlist_node *pos;
     hlist_for_each (pos, &obj->hhead[hash]) {
         LRUNode *c = list_entry(pos, LRUNode, node);
@@ -178,16 +186,21 @@ void lRUCachePut(LRUCache *obj, int key, int value)
 
 int lRUCacheGet(LRUCache *obj, int key)
 {
-    int hash = key % obj->hlist_size;
+    unsigned int hash = hash_func_multiplication_method(key, (int)floor(log2(obj->hlist_size)));
     struct hlist_node *pos;
+    clock_t start, end;
+    start = clock();
     hlist_for_each (pos, &obj->hhead[hash]) {
         LRUNode *cache = list_entry(pos, LRUNode, node); //HHHH
         if (cache->key == key) {
             list_move(&cache->link, &obj->dhead); //IIII
-            return cache->value;
+            end = clock();
+
+            return (end - start) * 1000000 / CLOCKS_PER_SEC;
         }
     }
-    return -1;
+    end = clock();
+    return (end - start) * 1000000 / CLOCKS_PER_SEC;
 }
 
 
