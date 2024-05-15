@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
-
+#include <stdbool.h>
+#include <time.h>
 
 
 float float_div2(float x)
@@ -17,12 +18,22 @@ float float_div2(float x)
 }
 
 int main(){
-    float x = 0;
-
-    if(float_div2(x) == x/2) printf("Correct\n");
-    printf("x =  %6f\n", x);
-    printf("float_div2(x) = %6f\n", float_div2(x));
-    printf("x/2 =  %6f\n", x/2);
+    srand(time(NULL));
+    bool check = true;
+    for(int i = 0; i < 10000 ; i++){
+        float x = (float)rand() / RAND_MAX;
+        if(float_div2(x) != x/2){
+            printf("Calculation Incorrect\n");
+            printf("x =  %6f\n", x);
+            printf("float_div2(x) = %6f\n", float_div2(x));
+            printf("x/2 =  %6f\n", x/2);
+            check = false;
+            break;
+        }
+    }
+    
+    if(check)printf("Calculation Correct\n");
+    
     return 0;
 }
 
